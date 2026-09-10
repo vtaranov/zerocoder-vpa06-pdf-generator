@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <title>Чек {{ receipt_number }}</title>
+  <style>
+    @page {
+      size: A5 portrait;
+      margin: 12mm;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      color: #20242a;
+      font-family: "DejaVu Sans", Arial, sans-serif;
+      font-size: 10pt;
+      line-height: 1.45;
+    }
+
+    .receipt {
+      border: 1px solid #d9dee5;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .header {
+      padding: 18px 20px 16px;
+      color: #ffffff;
+      background: #173b57;
+    }
+
+    .header h1 {
+      margin: 0 0 5px;
+      font-size: 21pt;
+      letter-spacing: 0.4px;
+    }
+
+    .header p,
+    .footer p {
+      margin: 0;
+    }
+
+    .meta {
+      display: table;
+      width: 100%;
+      padding: 14px 20px;
+      background: #f4f7fa;
+      border-bottom: 1px solid #d9dee5;
+    }
+
+    .meta-column {
+      display: table-cell;
+      width: 50%;
+      vertical-align: top;
+    }
+
+    .label {
+      display: block;
+      color: #68727d;
+      font-size: 8pt;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .value {
+      font-weight: 700;
+    }
+
+    .content {
+      padding: 18px 20px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+    }
+
+    th {
+      padding: 8px 7px;
+      color: #68727d;
+      font-size: 8pt;
+      text-align: left;
+      text-transform: uppercase;
+      border-bottom: 2px solid #173b57;
+    }
+
+    td {
+      padding: 10px 7px;
+      vertical-align: top;
+      border-bottom: 1px solid #e8ebef;
+      overflow-wrap: anywhere;
+    }
+
+    .col-product {
+      width: 49%;
+    }
+
+    .col-qty {
+      width: 13%;
+      text-align: center;
+    }
+
+    .col-price,
+    .col-total {
+      width: 19%;
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .summary {
+      width: 58%;
+      margin: 18px 0 0 auto;
+    }
+
+    .summary td {
+      padding: 6px 0;
+      border: 0;
+    }
+
+    .summary .grand-total td {
+      padding-top: 10px;
+      font-size: 13pt;
+      font-weight: 700;
+      border-top: 2px solid #173b57;
+    }
+
+    .footer {
+      padding: 13px 20px 15px;
+      color: #68727d;
+      font-size: 8.5pt;
+      text-align: center;
+      background: #f4f7fa;
+      border-top: 1px solid #d9dee5;
+    }
+  </style>
+</head>
+<body>
+  <main class="receipt">
+    <header class="header">
+      <h1>Кассовый чек</h1>
+      <p>Учебный магазин «Вектор»</p>
+    </header>
+
+    <section class="meta">
+      <div class="meta-column">
+        <span class="label">Номер чека</span>
+        <span class="value">{{ receipt_number }}</span>
+      </div>
+      <div class="meta-column">
+        <span class="label">Дата</span>
+        <span class="value">{{ receipt_date }}</span>
+      </div>
+    </section>
+
+    <section class="content">
+      <p><span class="label">Покупатель</span><span class="value">{{ customer }}</span></p>
+
+      <table aria-label="Позиции чека">
+        <thead>
+          <tr>
+            <th class="col-product">Товар</th>
+            <th class="col-qty">Кол.</th>
+            <th class="col-price">Цена</th>
+            <th class="col-total">Сумма</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in items %}
+          {% set product = item.product %}
+          {% set price = item.price %}
+          {% set qty = item.qty %}
+          <tr>
+            <td class="col-product">{{ product }}</td>
+            <td class="col-qty">{{ qty }}</td>
+            <td class="col-price">{{ price | money }} ₽</td>
+            <td class="col-total">{{ item.total | money }} ₽</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      <table class="summary" aria-label="Итого">
+        <tr>
+          <td>Позиций:</td>
+          <td class="col-total">{{ item_count }}</td>
+        </tr>
+        <tr class="grand-total">
+          <td>Итого:</td>
+          <td class="col-total">{{ grand_total | money }} ₽</td>
+        </tr>
+      </table>
+    </section>
+
+    <footer class="footer">
+      <p>Спасибо за покупку!</p>
+      <p>Документ создан автоматически программой PDF Check Maker.</p>
+    </footer>
+  </main>
+</body>
+</html>
