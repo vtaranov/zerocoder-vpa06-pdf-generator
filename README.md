@@ -76,8 +76,4 @@ python pdf_generator.py \
 python -m unittest discover -s tests -v
 ```
 
-Составной промпт сохранён в `PROMPT.md`, текст оффера - в `OFFER.md`.
-
-## Домашнее задание
-
-Отчёт о выполнении находится в `VPa06 - ДЗ.md`. Репозиторий проекта: [github.com/vtaranov/zerocoder-vpa06-pdf-generator](https://github.com/vtaranov/zerocoder-vpa06-pdf-generator).
+Составной промпт сохранён в `PROMPT.md`. Репозиторий проекта: [github.com/vtaranov/zerocoder-vpa06-pdf-generator](https://github.com/vtaranov/zerocoder-vpa06-pdf-generator).
